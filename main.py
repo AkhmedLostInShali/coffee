@@ -1,18 +1,19 @@
 import sqlite3
 import sys
 
-from PyQt5 import uic
+from main_ui import Ui_MainWindow
+from addEditCoffeeForm import Ui_Form
 from PyQt5.QtWidgets import QApplication, QWidget
 from PyQt5.QtWidgets import QMainWindow, QTableWidgetItem
 
-connection = sqlite3.connect("coffe.sqlite")
+connection = sqlite3.connect("data/coffe.sqlite")
 cur = connection.cursor()
 
 
-class DBSample(QMainWindow):
+class DBSample(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
-        uic.loadUi('main.ui', self)
+        self.setupUi(self)
         self.setWindowTitle('Эспрессо')
         self.initUi()
         self.pushButton.clicked.connect(self.open_window)
@@ -48,10 +49,10 @@ class DBSample(QMainWindow):
         connection.close()
 
 
-class ChangeElement(QWidget):
+class ChangeElement(QWidget, Ui_Form):
     def __init__(self, id):
         super().__init__()
-        uic.loadUi('addEditCoffeeForm.ui', self)
+        self.setupUi(self)
         self.id = id
         self.setWindowTitle('Изменить элемент')
         self.pushBtn.clicked.connect(self.change_element)
@@ -94,10 +95,10 @@ class ChangeElement(QWidget):
         self.close()
 
 
-class AddElement(QWidget):
+class AddElement(QWidget, Ui_Form):
     def __init__(self):
         super().__init__()
-        uic.loadUi('addEditCoffeeForm.ui', self)
+        self.setupUi(self)
         self.setWindowTitle('Добавить элемент')
         self.pushBtn.clicked.connect(self.add_element)
         for genre in cur.execute('SELECT type FROM grind'):
